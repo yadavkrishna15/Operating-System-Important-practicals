@@ -1,0 +1,38 @@
+import threading
+import time
+
+print_lock = threading.Lock()
+
+def task(name):
+    with print_lock:
+        print(f"{name} started")
+    time.sleep(2)
+    with print_lock:
+        print(f"{name} finished")
+
+# Sequential execution
+print("\n--- Sequential Execution ---")
+start_time = time.time()
+
+task("Task 1")
+task("Task 2")
+
+end_time = time.time()
+print("Sequential Time:", round(end_time - start_time, 2), "seconds")
+
+# Threaded execution
+print("\n--- Threaded Execution ---")
+start_time = time.time()
+
+t1 = threading.Thread(target=task, args=("Task 1",))
+t2 = threading.Thread(target=task, args=("Task 2",))
+
+t1.start()
+t2.start()
+
+t1.join()
+t2.join()
+
+end_time = time.time()
+print("Threaded Time:", round(end_time - start_time, 2), "seconds")
+print("S124 KRISHNA YADAV")
